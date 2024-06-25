@@ -2,6 +2,10 @@ import { Card, Attack } from "../../domain/entities";
 import { CardRepository } from "../../domain/repositories/card.repo";
 import CardModel from "../models/card.model";
 import AttackModel from "../models/attack.model";
+import sequelize from "../database";
+
+//TODO: trycatch blocks
+//TODO: transaction methods with multi calls
 
 export class SequelizeCardRepository implements CardRepository {
   async createCard(card: Card): Promise<void> {
@@ -12,6 +16,7 @@ export class SequelizeCardRepository implements CardRepository {
         hp: card.hp,
         weakness: card.weakness,
         resistance: card.resistance,
+        rarity: card.rarity,
         attacks: card.attacks.map((attack) => ({
           name: attack.name,
           power: attack.power,
@@ -35,6 +40,7 @@ export class SequelizeCardRepository implements CardRepository {
           cardModel.defense,
           cardModel.weakness,
           cardModel.resistance,
+          cardModel.rarity,
           cardModel.attacks
             ? cardModel.attacks.map(
                 (attack) => new Attack(attack.name, attack.power)
@@ -57,6 +63,7 @@ export class SequelizeCardRepository implements CardRepository {
       cardModel.defense,
       cardModel.weakness,
       cardModel.resistance,
+      cardModel.rarity,
       cardModel.attacks
         ? cardModel.attacks.map(
             (attack) => new Attack(attack.name, attack.power)
@@ -66,6 +73,8 @@ export class SequelizeCardRepository implements CardRepository {
   }
 
   async updateCard(id: number, card: Card): Promise<void> {
+    const transaction = sequelize.transaction(); //TODO transaction example.
+
     await CardModel.update(
       {
         name: card.name,
@@ -73,6 +82,7 @@ export class SequelizeCardRepository implements CardRepository {
         hp: card.hp,
         weakness: card.weakness,
         resistance: card.resistance,
+        rarity: card.rarity,
       },
       {
         where: { id },

@@ -9,6 +9,7 @@ export class Card {
     public attack: number,
     public weakness: string,
     public resistance: string,
+    public rarity: string,
     public attacks: Attack[] = []
   ) {}
 }
