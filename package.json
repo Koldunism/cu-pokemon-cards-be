@@ -4,7 +4,8 @@
   "description": "Back end application for interview",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npx prettier --write \"**/*.ts\""
   },
   "keywords": [],
   "author": "Juan G. Palermo",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.8",
+    "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
