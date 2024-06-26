@@ -8,7 +8,7 @@ import sequelize from "../database";
 //TODO: transaction methods with multi calls
 
 export class SequelizeCardRepository implements CardRepository {
-  async createCard(card: Card): Promise<void> {
+  async createCard(card: Card): Promise<Card> {
     const cardModel = await CardModel.create(
       {
         name: card.name,
@@ -17,14 +17,36 @@ export class SequelizeCardRepository implements CardRepository {
         weakness: card.weakness,
         resistance: card.resistance,
         rarity: card.rarity,
+        expansion: card.expansion,
         attacks: card.attacks.map((attack) => ({
           name: attack.name,
           power: attack.power,
         })),
       },
       {
-        include: [AttackModel],
+        include: [
+          {
+            model: AttackModel,
+            as: "attacks",
+          },
+        ],
       }
+    );
+
+    const attacks = cardModel.dataValues.attacks as [AttackModel];
+
+    return new Card(
+      cardModel.name,
+      cardModel.type,
+      cardModel.hp,
+      cardModel.rarity,
+      cardModel.expansion,
+      attacks.map(
+        (attack) => new Attack(attack.dataValues.name, attack.dataValues.power)
+      ),
+      cardModel.weakness,
+      cardModel.resistance,
+      cardModel.id
     );
   }
 
@@ -33,19 +55,18 @@ export class SequelizeCardRepository implements CardRepository {
     return cardModels.map(
       (cardModel) =>
         new Card(
-          cardModel.id,
           cardModel.name,
           cardModel.type,
           cardModel.hp,
-          cardModel.defense,
-          cardModel.weakness,
-          cardModel.resistance,
           cardModel.rarity,
+          cardModel.expansion,
           cardModel.attacks
             ? cardModel.attacks.map(
                 (attack) => new Attack(attack.name, attack.power)
               )
-            : []
+            : [],
+          cardModel.weakness,
+          cardModel.resistance
         )
     );
   }
@@ -56,19 +77,18 @@ export class SequelizeCardRepository implements CardRepository {
       return null;
     }
     return new Card(
-      cardModel.id,
       cardModel.name,
       cardModel.type,
       cardModel.hp,
-      cardModel.defense,
-      cardModel.weakness,
-      cardModel.resistance,
       cardModel.rarity,
+      cardModel.expansion,
       cardModel.attacks
         ? cardModel.attacks.map(
             (attack) => new Attack(attack.name, attack.power)
           )
-        : []
+        : [],
+      cardModel.weakness,
+      cardModel.resistance
     );
   }
 
@@ -83,6 +103,7 @@ export class SequelizeCardRepository implements CardRepository {
         weakness: card.weakness,
         resistance: card.resistance,
         rarity: card.rarity,
+        expansion: card.expansion,
       },
       {
         where: { id },
