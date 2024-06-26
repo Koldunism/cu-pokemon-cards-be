@@ -1,13 +1,16 @@
-import { FastifyInstance, FastifyReply } from "fastify";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { createCardSchema } from "./controllers/crearteCard/createCard.schema";
+
+const cardsBasePath = "/cards";
 
 export const router = async (app: FastifyInstance) => {
   app.route({
-    url: "/cards",
-    method: "GET",
-    schema: {}, // TODO: implement Schema
+    url: cardsBasePath,
+    method: "POST",
+    schema: createCardSchema, // TODO: implement Schema
     handler: async (
-      req: any /*TODO: implement custom req*/,
+      req: FastifyRequest /*TODO: implement custom req*/,
       res: FastifyReply
-    ) => console.log("get cards controller"), // TODO create controller
+    ) => console.log(req.body), // TODO create controller
   });
 };

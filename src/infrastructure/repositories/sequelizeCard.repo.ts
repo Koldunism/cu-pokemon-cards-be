@@ -33,11 +33,9 @@ export class SequelizeCardRepository implements CardRepository {
     return cardModels.map(
       (cardModel) =>
         new Card(
-          cardModel.id,
           cardModel.name,
           cardModel.type,
           cardModel.hp,
-          cardModel.defense,
           cardModel.weakness,
           cardModel.resistance,
           cardModel.rarity,
@@ -56,11 +54,9 @@ export class SequelizeCardRepository implements CardRepository {
       return null;
     }
     return new Card(
-      cardModel.id,
       cardModel.name,
       cardModel.type,
       cardModel.hp,
-      cardModel.defense,
       cardModel.weakness,
       cardModel.resistance,
       cardModel.rarity,

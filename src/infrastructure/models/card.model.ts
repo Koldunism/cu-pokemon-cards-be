@@ -7,7 +7,6 @@ class CardModel extends Model {
   public name!: string;
   public type!: string;
   public hp!: number;
-  public defense!: number;
   public weakness!: string;
   public resistance!: string;
   public rarity!: string;
