@@ -17,17 +17,37 @@ export class SequelizeCardRepository implements CardRepository {
         weakness: card.weakness,
         resistance: card.resistance,
         rarity: card.rarity,
+        expansion: card.expansion,
         attacks: card.attacks.map((attack) => ({
           name: attack.name,
           power: attack.power,
         })),
       },
       {
-        include: [AttackModel],
+        include: [
+          {
+            model: AttackModel,
+            as: "attacks",
+          },
+        ],
       }
     );
 
-    return cardModel as Card;
+    const attacks = cardModel.dataValues.attacks as [AttackModel];
+
+    return new Card(
+      cardModel.name,
+      cardModel.type,
+      cardModel.hp,
+      cardModel.rarity,
+      cardModel.expansion,
+      attacks.map(
+        (attack) => new Attack(attack.dataValues.name, attack.dataValues.power)
+      ),
+      cardModel.weakness,
+      cardModel.resistance,
+      cardModel.id
+    );
   }
 
   async getAllCards(): Promise<Card[]> {
@@ -39,6 +59,7 @@ export class SequelizeCardRepository implements CardRepository {
           cardModel.type,
           cardModel.hp,
           cardModel.rarity,
+          cardModel.expansion,
           cardModel.attacks
             ? cardModel.attacks.map(
                 (attack) => new Attack(attack.name, attack.power)
@@ -60,6 +81,7 @@ export class SequelizeCardRepository implements CardRepository {
       cardModel.type,
       cardModel.hp,
       cardModel.rarity,
+      cardModel.expansion,
       cardModel.attacks
         ? cardModel.attacks.map(
             (attack) => new Attack(attack.name, attack.power)
@@ -81,6 +103,7 @@ export class SequelizeCardRepository implements CardRepository {
         weakness: card.weakness,
         resistance: card.resistance,
         rarity: card.rarity,
+        expansion: card.expansion,
       },
       {
         where: { id },

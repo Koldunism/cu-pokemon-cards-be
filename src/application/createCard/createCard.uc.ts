@@ -1,10 +1,9 @@
 import { AppError, BaseUseCase, Result } from "../../core";
 import { Card } from "../../domain/entities";
 import { CardRepository } from "../../domain/repositories/card.repo";
-import { CreateCardInput } from "./createCard.dto";
+import { CreateCardInput, CreateCardOutput } from "./createCard.dto";
 
-// TODO: CreateCardOutput
-type UseCaseResult = AppError.UnexpectedError | Result<any>;
+type UseCaseResult = AppError.UnexpectedError | Result<CreateCardOutput>;
 
 export class CreateCardUseCase extends BaseUseCase<
   CreateCardInput,
@@ -23,8 +22,8 @@ export class CreateCardUseCase extends BaseUseCase<
 
       const createdCard = await this.cardRepository.createCard(cardToCreate);
 
-      return Result.success<any>({
-        result: createdCard,
+      return Result.success<CreateCardOutput>({
+        data: createdCard,
       });
     } catch (error: any) {
       return AppError.UnexpectedError.create(error);

@@ -6,8 +6,10 @@ export class Card {
     public type: string,
     public hp: number,
     public rarity: string,
+    public expansion: string,
     public attacks: Attack[] = [],
     public weakness?: string,
-    public resistance?: string
+    public resistance?: string,
+    public id?: number
   ) {}
 }

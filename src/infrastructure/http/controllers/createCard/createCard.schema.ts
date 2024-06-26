@@ -59,6 +59,9 @@ const bodyJsonSchema = {
       type: "string",
       enum: cardsRarity,
     },
+    expansion: {
+      type: "string",
+    },
     attacks: {
       type: "array",
       items: attackItem,
