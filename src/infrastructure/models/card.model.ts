@@ -17,7 +17,7 @@ class CardModel extends Model {
 CardModel.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -30,7 +30,7 @@ CardModel.init(
       allowNull: false,
     },
     hp: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     weakness: {

@@ -7,6 +7,7 @@ const sequelize = new Sequelize({
   username: DBCONFIG.username,
   password: DBCONFIG.password,
   database: DBCONFIG.database,
+  logging: false,
 });
 
 export default sequelize;
