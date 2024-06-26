@@ -7,3 +7,20 @@ export const DBCONFIG = {
   database: process.env.DB_NAME || "pokemon_cards",
   dialect: (process.env.DB_DIALECT as Dialect) || "postgres",
 };
+
+export const FASTIFYCONFIG = {
+  ajv: {
+    customOptions: {
+      coerceTypes: true,
+      removeAdditional: true,
+      useDefaults: true,
+      allErrors: true,
+    },
+  },
+  logger: false,
+};
+
+export const SERVERCONFIG = {
+  port: process.env.PORT || 3000,
+  host: process.env.HOST || "0.0.0.0",
+};
