@@ -27,6 +27,7 @@ export class CreateCardUseCase extends BaseUseCase<CreateCardInput, UseCaseResul
         data: createdCard
       })
     } catch (error: any) {
+      console.error('Error at CreateCardUseCase:', error)
       return AppError.UnexpectedError.create(error)
     }
   }

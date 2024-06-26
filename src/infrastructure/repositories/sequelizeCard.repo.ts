@@ -3,6 +3,8 @@ import { CardRepository } from '../../domain/repositories/card.repo'
 import CardModel from '../models/card.model'
 import AttackModel from '../models/attack.model'
 import sequelize from '../database'
+import { Paginated, PaginatedQueryParams } from '../../core/PaginateQuery'
+import { SortQueryParams } from '../../core'
 
 //TODO: trycatch blocks
 //TODO: transaction methods with multi calls
@@ -38,9 +40,34 @@ export class SequelizeCardRepository implements CardRepository {
     }
   }
 
-  async getAllCards(): Promise<Card[]> {
-    const cardModels = await CardModel.findAll({ include: [AttackModel] })
-    return cardModels.map((cardModel) => new Card({ ...cardModel }))
+  async getAllCardsPaginated(filter: PaginatedQueryParams & SortQueryParams): Promise<Paginated<Card> | null> {
+    const { limit, offset, sortBy, order } = filter
+    const transaction = await sequelize.transaction()
+
+    try {
+      const { rows, count } = await CardModel.findAndCountAll({
+        include: [{ model: AttackModel, as: 'attacks' }],
+        distinct: true,
+        limit,
+        offset,
+        order: [[sortBy, order]]
+      })
+      await transaction.commit()
+
+      const data = rows.map((cardModel) => new Card({ ...cardModel.dataValues }))
+
+      return {
+        data,
+        offset,
+        limit,
+        hasNext: offset + data.length < count,
+        total: count
+      }
+    } catch (error) {
+      await transaction.rollback()
+      console.error('Error at getAllCardsPaginated DB method: ', JSON.stringify(error))
+      return null
+    }
   }
 
   async getCardById(id: number): Promise<Card | null> {
