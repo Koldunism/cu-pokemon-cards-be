@@ -1,0 +1,84 @@
+import { DataTypes, Sequelize } from 'sequelize'
+import AttackModel from './attack.model'
+
+describe('AttackModel', () => {
+  const sequelizeInstance = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false
+  })
+
+  beforeAll(async () => {
+    AttackModel.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
+        },
+        cardId: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        },
+        name: {
+          type: new DataTypes.STRING(128),
+          allowNull: false
+        },
+        power: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        }
+      },
+      {
+        tableName: 'attacks',
+        sequelize: sequelizeInstance
+      }
+    )
+    await sequelizeInstance.sync({ force: true })
+  })
+
+  afterAll(async () => {
+    await sequelizeInstance.close()
+  })
+
+  it('should create an instance of AttackModel with valid properties', async () => {
+    const attack = await AttackModel.create({
+      cardId: 1,
+      name: 'Thunder Shock',
+      power: 40
+    })
+
+    expect(attack).toBeInstanceOf(AttackModel)
+    expect(attack.id).toBeDefined()
+    expect(attack.cardId).toBe(1)
+    expect(attack.name).toBe('Thunder Shock')
+    expect(attack.power).toBe(40)
+  })
+
+  it('should not create an instance of AttackModel without cardId', async () => {
+    await expect(
+      AttackModel.create({
+        name: 'Thunder Shock',
+        power: 40
+      })
+    ).rejects.toThrow()
+  })
+
+  it('should not create an instance of AttackModel without name', async () => {
+    await expect(
+      AttackModel.create({
+        cardId: 1,
+        power: 40
+      })
+    ).rejects.toThrow()
+  })
+
+  it('should not create an instance of AttackModel without power', async () => {
+    await expect(
+      AttackModel.create({
+        cardId: 1,
+        name: 'Thunder Shock'
+      })
+    ).rejects.toThrow()
+  })
+})
