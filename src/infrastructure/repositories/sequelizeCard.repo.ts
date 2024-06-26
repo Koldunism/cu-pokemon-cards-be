@@ -8,7 +8,7 @@ import sequelize from "../database";
 //TODO: transaction methods with multi calls
 
 export class SequelizeCardRepository implements CardRepository {
-  async createCard(card: Card): Promise<void> {
+  async createCard(card: Card): Promise<Card> {
     const cardModel = await CardModel.create(
       {
         name: card.name,
@@ -26,6 +26,8 @@ export class SequelizeCardRepository implements CardRepository {
         include: [AttackModel],
       }
     );
+
+    return cardModel as Card;
   }
 
   async getAllCards(): Promise<Card[]> {
@@ -36,14 +38,14 @@ export class SequelizeCardRepository implements CardRepository {
           cardModel.name,
           cardModel.type,
           cardModel.hp,
-          cardModel.weakness,
-          cardModel.resistance,
           cardModel.rarity,
           cardModel.attacks
             ? cardModel.attacks.map(
                 (attack) => new Attack(attack.name, attack.power)
               )
-            : []
+            : [],
+          cardModel.weakness,
+          cardModel.resistance
         )
     );
   }
@@ -57,14 +59,14 @@ export class SequelizeCardRepository implements CardRepository {
       cardModel.name,
       cardModel.type,
       cardModel.hp,
-      cardModel.weakness,
-      cardModel.resistance,
       cardModel.rarity,
       cardModel.attacks
         ? cardModel.attacks.map(
             (attack) => new Attack(attack.name, attack.power)
           )
-        : []
+        : [],
+      cardModel.weakness,
+      cardModel.resistance
     );
   }
 
