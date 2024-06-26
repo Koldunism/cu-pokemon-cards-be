@@ -1,6 +1,5 @@
 import 'source-map-support/register'
 import sequelize from './infrastructure/database'
-
 ;(async () => {
   await sequelize.authenticate()
   console.log('DB [pokemon_cards]: ✅ Connection established successfully')

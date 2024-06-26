@@ -9,6 +9,7 @@ export interface CardParams {
   attacks?: Attack[]
   weakness?: string
   resistance?: string
+  defense?: number
   id?: number
 }
 
@@ -21,6 +22,7 @@ export class Card {
   public attacks: Attack[]
   public weakness?: string
   public resistance?: string
+  public defense?: number
   public id?: number
 
   constructor(params: CardParams) {
@@ -32,6 +34,7 @@ export class Card {
     this.attacks = params.attacks || []
     this.weakness = params.weakness
     this.resistance = params.resistance
+    this.defense = params.defense
     this.id = params.id
   }
 }

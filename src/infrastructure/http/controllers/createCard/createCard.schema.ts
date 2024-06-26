@@ -35,7 +35,7 @@ const attackItem = {
 
 const bodyJsonSchema = {
   type: 'object',
-  required: ['name', 'type', 'hp', 'rarity', 'attacks'],
+  required: ['name', 'type', 'hp', 'rarity', 'attacks', 'expansion'],
   properties: {
     name: {
       type: 'string'
@@ -47,13 +47,9 @@ const bodyJsonSchema = {
     hp: {
       type: 'number'
     },
-    weakness: {
-      type: 'string',
-      enum: pokemonTypes
-    },
-    resistance: {
-      type: 'string',
-      enum: pokemonTypes
+    attacks: {
+      type: 'array',
+      items: attackItem
     },
     rarity: {
       type: 'string',
@@ -62,9 +58,16 @@ const bodyJsonSchema = {
     expansion: {
       type: 'string'
     },
-    attacks: {
-      type: 'array',
-      items: attackItem
+    weakness: {
+      type: 'string',
+      enum: pokemonTypes
+    },
+    resistance: {
+      type: 'string',
+      enum: pokemonTypes
+    },
+    defense: {
+      type: 'number'
     }
   },
   additionalProperties: false

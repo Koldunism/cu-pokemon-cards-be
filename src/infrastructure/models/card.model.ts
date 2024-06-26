@@ -9,6 +9,7 @@ class CardModel extends Model {
   public hp!: number
   public weakness!: string
   public resistance!: string
+  public defense!: number
   public attacks: AttackModel[] = []
   public rarity!: string
   public expansion!: string
@@ -35,11 +36,15 @@ CardModel.init(
     },
     weakness: {
       type: new DataTypes.STRING(128),
-      allowNull: false
+      allowNull: true
     },
     resistance: {
       type: new DataTypes.STRING(128),
-      allowNull: false
+      allowNull: true
+    },
+    defense: {
+      type: new DataTypes.INTEGER(),
+      allowNull: true
     },
     rarity: {
       type: new DataTypes.STRING(128),
