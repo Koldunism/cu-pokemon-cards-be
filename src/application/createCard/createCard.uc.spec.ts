@@ -8,7 +8,7 @@ import { CreateCardInput } from './createCard.dto'
 // Mock del repositorio de cartas
 const mockCardRepository: jest.Mocked<CardRepository> = {
   createCard: jest.fn(),
-  getAllCards: jest.fn(),
+  getAllCardsPaginated: jest.fn(),
   getCardById: jest.fn(),
   updateCard: jest.fn(),
   deleteCard: jest.fn()

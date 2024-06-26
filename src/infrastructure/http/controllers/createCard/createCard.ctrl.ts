@@ -22,7 +22,7 @@ export class CreateCardController extends BaseController {
       if (result.isFailure) {
         const error = result as Result<UseCaseError>
         const errorMsg = error.errorValue.message
-        console.error(`Error produced while creating card ${useCaseInput}: ${errorMsg}`)
+        console.error(`Error produced while creating card ${JSON.stringify(useCaseInput)}: ${errorMsg}`)
         switch (error.constructor) {
           case CreateCardErrors.CardCreationFailed:
             return this.conflict(reply, errorMsg)
