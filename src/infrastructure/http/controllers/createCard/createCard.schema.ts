@@ -35,15 +35,7 @@ const attackItem = {
 
 const bodyJsonSchema = {
   type: "object",
-  required: [
-    "name",
-    "type",
-    "hp",
-    "weakness",
-    "resistance",
-    "rarity",
-    "attacks",
-  ],
+  required: ["name", "type", "hp", "rarity", "attacks"],
   properties: {
     name: {
       type: "string",
@@ -77,5 +69,4 @@ const bodyJsonSchema = {
 
 export const createCardSchema = {
   body: bodyJsonSchema,
-  response: {},
 };
