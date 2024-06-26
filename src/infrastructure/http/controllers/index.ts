@@ -1,6 +1,6 @@
-import createCardUseCase from "../../../application/createCard";
-import { CreateCardController } from "./createCard";
+import createCardUseCase from '../../../application/createCard'
+import { CreateCardController } from './createCard'
 
-const createCardController = new CreateCardController(createCardUseCase);
+const createCardController = new CreateCardController(createCardUseCase)
 
-export { createCardController };
+export { createCardController }

@@ -1,11 +1,11 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { Model, DataTypes } from 'sequelize'
+import sequelize from '../database'
 
 class AttackModel extends Model {
-  public id!: number;
-  public cardId!: number;
-  public name!: string;
-  public power!: number;
+  public id!: number
+  public cardId!: number
+  public name!: string
+  public power!: number
 }
 
 AttackModel.init(
@@ -13,25 +13,25 @@ AttackModel.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     cardId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     name: {
       type: new DataTypes.STRING(128),
-      allowNull: false,
+      allowNull: false
     },
     power: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
-    tableName: "attacks",
-    sequelize,
+    tableName: 'attacks',
+    sequelize
   }
-);
+)
 
-export default AttackModel;
+export default AttackModel

@@ -1,5 +1,5 @@
-import { SequelizeCardRepository } from "./sequelizeCard.repo";
+import { SequelizeCardRepository } from './sequelizeCard.repo'
 
-const sequelizeCardRepository = new SequelizeCardRepository();
+const sequelizeCardRepository = new SequelizeCardRepository()
 
-export default sequelizeCardRepository;
+export default sequelizeCardRepository
