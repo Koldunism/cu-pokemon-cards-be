@@ -50,7 +50,7 @@ export class HttpResponse {
     res: FastifyReply,
     message?: string | HttpErrorRes
   ): Promise<any> {
-    return this.jsonResponse(res, 409, { code: STATUS_CODES[400], message });
+    return this.jsonResponse(res, 409, { code: STATUS_CODES[409], message });
   }
   public async internalServerError(
     res: FastifyReply,

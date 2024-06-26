@@ -8,67 +8,39 @@ import sequelize from "../database";
 //TODO: transaction methods with multi calls
 
 export class SequelizeCardRepository implements CardRepository {
-  async createCard(card: Card): Promise<Card> {
-    const cardModel = await CardModel.create(
-      {
-        name: card.name,
-        type: card.type,
-        hp: card.hp,
-        weakness: card.weakness,
-        resistance: card.resistance,
-        rarity: card.rarity,
-        expansion: card.expansion,
-        attacks: card.attacks.map((attack) => ({
-          name: attack.name,
-          power: attack.power,
-        })),
-      },
-      {
-        include: [
-          {
-            model: AttackModel,
-            as: "attacks",
-          },
-        ],
-      }
-    );
+  async createCard(card: Card): Promise<Card | null> {
+    const { attacks, ...cardData } = card;
+    const transaction = await sequelize.transaction();
 
-    const attacks = cardModel.dataValues.attacks as [AttackModel];
+    try {
+      const cardModel = await CardModel.create(
+        {
+          ...cardData,
+          attacks: attacks.map(({ name, power }) => ({ name, power })),
+        },
+        {
+          include: [{ model: AttackModel, as: "attacks" }],
+        }
+      );
 
-    return new Card(
-      cardModel.name,
-      cardModel.type,
-      cardModel.hp,
-      cardModel.rarity,
-      cardModel.expansion,
-      attacks.map(
-        (attack) => new Attack(attack.dataValues.name, attack.dataValues.power)
-      ),
-      cardModel.weakness,
-      cardModel.resistance,
-      cardModel.id
-    );
+      await transaction.commit();
+
+      const attacksModel = cardModel.dataValues.attacks as [AttackModel];
+
+      return new Card({
+        ...cardModel.dataValues,
+        attacks: attacksModel.map(({ name, power }) => ({ name, power })),
+      });
+    } catch (error: any) {
+      await transaction.rollback();
+      console.error("Error at createCard DB method: ", JSON.stringify(error));
+      return null;
+    }
   }
 
   async getAllCards(): Promise<Card[]> {
     const cardModels = await CardModel.findAll({ include: [AttackModel] });
-    return cardModels.map(
-      (cardModel) =>
-        new Card(
-          cardModel.name,
-          cardModel.type,
-          cardModel.hp,
-          cardModel.rarity,
-          cardModel.expansion,
-          cardModel.attacks
-            ? cardModel.attacks.map(
-                (attack) => new Attack(attack.name, attack.power)
-              )
-            : [],
-          cardModel.weakness,
-          cardModel.resistance
-        )
-    );
+    return cardModels.map((cardModel) => new Card({ ...cardModel }));
   }
 
   async getCardById(id: number): Promise<Card | null> {
@@ -76,20 +48,7 @@ export class SequelizeCardRepository implements CardRepository {
     if (!cardModel) {
       return null;
     }
-    return new Card(
-      cardModel.name,
-      cardModel.type,
-      cardModel.hp,
-      cardModel.rarity,
-      cardModel.expansion,
-      cardModel.attacks
-        ? cardModel.attacks.map(
-            (attack) => new Attack(attack.name, attack.power)
-          )
-        : [],
-      cardModel.weakness,
-      cardModel.resistance
-    );
+    return new Card({ ...cardModel });
   }
 
   async updateCard(id: number, card: Card): Promise<void> {
