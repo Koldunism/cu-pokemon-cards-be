@@ -1,6 +1,6 @@
 import { GetAllCardsUseCase } from './getAllCards.uc'
 import { CardRepository } from '../../domain/repositories/card.repo'
-import { Result, AppError } from '../../core'
+import { AppError } from '../../core'
 import { GetAllCardsInput, GetAllCardsOutput } from './getAllCards.dto'
 import { GetAllCardsError } from './getAllCards.err'
 

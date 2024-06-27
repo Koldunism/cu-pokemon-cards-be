@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify'
 import { router } from './routes'
-import { createCardController, getAllCardsController, updateCardController } from './controllers'
+import { createCardController, getAllCardsController, getCardByIdController, updateCardController } from './controllers'
 
 jest.mock('./controllers', () => ({
   createCardController: {
@@ -16,6 +16,11 @@ jest.mock('./controllers', () => ({
   updateCardController: {
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'Card updated' })
+    })
+  },
+  getCardByIdController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Card obtained' })
     })
   }
 }))
@@ -138,5 +143,25 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(400)
+  })
+
+  it('should validate request for GET /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/a'
+    })
+
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('should register GET /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/1'
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Card obtained' })
+    expect(getAllCardsController.exec).toHaveBeenCalled()
   })
 })

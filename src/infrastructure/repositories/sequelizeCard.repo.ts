@@ -72,11 +72,25 @@ export class SequelizeCardRepository implements CardRepository {
   }
 
   async getCardById(id: number): Promise<Card | null> {
-    const cardModel = await CardModel.findByPk(id, { include: [AttackModel] })
-    if (!cardModel) {
-      return null
+    const transaction = await sequelize.transaction()
+    try {
+      const cardModel = await CardModel.findByPk(id, { include: [{ model: AttackModel, as: 'attacks' }], transaction })
+      await transaction.commit()
+      if (!cardModel) {
+        return null
+      }
+
+      const attacksModel = cardModel.dataValues.attacks as [AttackModel]
+
+      return new Card({
+        ...cardModel.dataValues,
+        attacks: attacksModel.map(({ name, power }) => ({ name, power }))
+      })
+    } catch (error) {
+      await transaction.rollback()
+      console.error('Error at getAllCardsPaginated DB method: ', JSON.stringify(error))
+      throw new Error('DB Error, check logs.')
     }
-    return new Card({ ...cardModel })
   }
 
   async updateCard(card: Partial<Card>): Promise<boolean> {
