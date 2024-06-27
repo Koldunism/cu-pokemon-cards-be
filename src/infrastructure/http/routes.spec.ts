@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify'
 import { router } from './routes'
-import { createCardController, getAllCardsController } from './controllers'
+import { createCardController, getAllCardsController, updateCardController } from './controllers'
 
 jest.mock('./controllers', () => ({
   createCardController: {
@@ -11,6 +11,11 @@ jest.mock('./controllers', () => ({
   getAllCardsController: {
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'List retrieved' })
+    })
+  },
+  updateCardController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Card updated' })
     })
   }
 }))
@@ -103,6 +108,32 @@ describe('router', () => {
         offset: '0',
         sortBy: 'invalidField',
         order: 'asc'
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('should register PATCH /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: '/cards/1',
+      payload: {
+        name: 'Pinsir'
+      }
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Card updated' })
+    expect(getAllCardsController.exec).toHaveBeenCalled()
+  })
+
+  it('should validate request for PATCH /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: '/cards/1',
+      payload: {
+        defense: 'wrong'
       }
     })
 
