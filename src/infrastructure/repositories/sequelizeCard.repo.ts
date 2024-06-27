@@ -173,4 +173,13 @@ export class SequelizeCardRepository implements CardRepository {
       return false
     }
   }
+
+  async getCardsByType(type: string): Promise<Card[]> {
+    const cardModels = await CardModel.findAll({
+      where: { type },
+      include: [{ model: AttackModel, as: 'attacks' }]
+    })
+
+    return cardModels.map((cardModel) => new Card({ ...cardModel.dataValues }))
+  }
 }

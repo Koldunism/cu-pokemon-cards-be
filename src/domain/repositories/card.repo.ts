@@ -7,6 +7,7 @@ export interface CardRepository {
   getCardById(id: number): Promise<Card | null>
   updateCard(card: Partial<Card>): Promise<boolean>
   deleteCard(id: number): Promise<boolean>
+  getCardsByType(type: string): Promise<Array<Card>>
 }
 
 export type DataLimiters = PaginatedQueryParams & SortQueryParams

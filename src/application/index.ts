@@ -4,6 +4,7 @@ import { CreateCardUseCase } from './createCard'
 import { DeleteCardUseCase } from './deleteCard'
 import { GetAllCardsUseCase } from './getAllCards'
 import { GetCardByIdUseCase } from './getCardById'
+import { GetDamageModifiersUseCase } from './getDamageModifiers'
 import { UpdateCardUseCase } from './updateCard'
 
 const cardRepository: CardRepository = sequelizeCardRepository
@@ -13,5 +14,13 @@ const getAllCardsUseCase = new GetAllCardsUseCase(cardRepository)
 const updateCardUseCase = new UpdateCardUseCase(cardRepository)
 const getCardByIdUseCase = new GetCardByIdUseCase(cardRepository)
 const deleteCardUseCase = new DeleteCardUseCase(cardRepository)
+const getDamageModifiersUseCase = new GetDamageModifiersUseCase(cardRepository)
 
-export { createCardUseCase, getAllCardsUseCase, updateCardUseCase, getCardByIdUseCase, deleteCardUseCase }
+export {
+  createCardUseCase,
+  getAllCardsUseCase,
+  updateCardUseCase,
+  getCardByIdUseCase,
+  deleteCardUseCase,
+  getDamageModifiersUseCase
+}

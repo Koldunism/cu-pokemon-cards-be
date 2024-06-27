@@ -5,6 +5,7 @@ import {
   deleteCardController,
   getAllCardsController,
   getCardByIdController,
+  getDamageModifiersController,
   updateCardController
 } from './controllers'
 
@@ -32,6 +33,11 @@ jest.mock('./controllers', () => ({
   deleteCardController: {
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'Card deleted' })
+    })
+  },
+  getDamageModifiersController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Cards obtained' })
     })
   }
 }))
@@ -194,5 +200,25 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(400)
+  })
+
+  it('should validate request for GET /cards/:id/damage-modifiers route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/damage-modifiers'
+    })
+
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('should register GET /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/1/damage-modifiers'
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Cards obtained' })
+    expect(getAllCardsController.exec).toHaveBeenCalled()
   })
 })

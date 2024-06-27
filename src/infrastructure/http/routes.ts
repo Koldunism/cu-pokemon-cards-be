@@ -9,8 +9,10 @@ import {
   deleteCardController,
   getAllCardsController,
   getCardByIdController,
+  getDamageModifiersController,
   updateCardController
 } from './controllers'
+import { GetDamageModifiersReq, getDamageModifiersSchema } from './controllers/getDamageModifiers'
 
 const cardsBasePath = '/cards'
 
@@ -48,5 +50,12 @@ export const router = async (app: FastifyInstance) => {
     method: 'DELETE',
     schema: deleteCardSchema,
     handler: async (req: DeleteCardReq, reply: FastifyReply) => deleteCardController.exec(req, reply)
+  })
+
+  app.route({
+    url: `${cardsBasePath}/:id/damage-modifiers`,
+    method: 'GET',
+    schema: getDamageModifiersSchema,
+    handler: async (req: GetDamageModifiersReq, reply: FastifyReply) => getDamageModifiersController.exec(req, reply)
   })
 }

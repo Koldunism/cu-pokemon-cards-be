@@ -14,7 +14,8 @@ describe('GetCardByIdUseCase', () => {
       createCard: jest.fn(),
       getCardById: jest.fn(),
       updateCard: jest.fn(),
-      deleteCard: jest.fn()
+      deleteCard: jest.fn(),
+      getCardsByType: jest.fn()
     }
 
     useCase = new GetCardByIdUseCase(mockCardRepository)
