@@ -13,9 +13,11 @@ export class HttpResponse {
   public async ok<T>(res: FastifyReply, dto?: T): Promise<any> {
     return this.jsonResponse(res, 200, dto || STATUS_CODES[200])
   }
-
   public async created(res: FastifyReply): Promise<any> {
     return this.jsonResponse(res, 201, STATUS_CODES[201])
+  }
+  public async noContent(res: FastifyReply, message?: string | HttpErrorRes): Promise<any> {
+    return this.jsonResponse(res, 204, { code: STATUS_CODES[204], message })
   }
 
   public async badRequest(res: FastifyReply, message?: string | HttpErrorRes): Promise<any> {
@@ -33,6 +35,7 @@ export class HttpResponse {
   public async conflict(res: FastifyReply, message?: string | HttpErrorRes): Promise<any> {
     return this.jsonResponse(res, 409, { code: STATUS_CODES[409], message })
   }
+
   public async internalServerError(res: FastifyReply, message?: string | HttpErrorRes): Promise<any> {
     return this.jsonResponse(res, 500, { code: STATUS_CODES[500], message })
   }

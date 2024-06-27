@@ -5,7 +5,7 @@ import { Card } from '../../domain/entities'
 import { CreateCardInput } from '../createCard'
 import { UpdateCardError } from './updateCard.err'
 
-type UseCaseResult = AppError.UnexpectedError | Result<UpdateCardOutput>
+type UseCaseResult = AppError.UnexpectedError | UpdateCardError.CardUpdateFailed | Result<UpdateCardOutput>
 
 export class UpdateCardUseCase extends BaseUseCase<CreateCardInput, UseCaseResult> {
   private readonly cardRepository: CardRepository

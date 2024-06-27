@@ -3,7 +3,7 @@ import { GetAllCardsError } from '../../../../application/getAllCards/getAllCard
 
 import { AppError, Result } from '../../../../core'
 
-const mockGetAllCardsUseCase = {
+const mockUpdateCardUseCase = {
   exec: jest.fn()
 } as any
 
@@ -13,7 +13,7 @@ describe('UpdateCardController', () => {
   let mockReply: any
 
   beforeEach(() => {
-    updateCardController = new UpdateCardController(mockGetAllCardsUseCase)
+    updateCardController = new UpdateCardController(mockUpdateCardUseCase)
     mockRequest = {
       params: {
         id: 1
@@ -34,11 +34,11 @@ describe('UpdateCardController', () => {
   })
 
   it('should return 200 if nothing fails', async () => {
-    mockGetAllCardsUseCase.exec.mockResolvedValue(Result.success({ success: true }))
+    mockUpdateCardUseCase.exec.mockResolvedValue(Result.success({ success: true }))
 
     await updateCardController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalled()
+    expect(mockUpdateCardUseCase.exec).toHaveBeenCalled()
     expect(mockReply.code).toHaveBeenCalledWith(200)
     expect(mockReply.send).toHaveBeenCalled()
   })
@@ -46,11 +46,11 @@ describe('UpdateCardController', () => {
   it('should return 500 if updating fails', async () => {
     const errorResult = new GetAllCardsError.CardsSearchFailed()
 
-    mockGetAllCardsUseCase.exec.mockResolvedValue(errorResult)
+    mockUpdateCardUseCase.exec.mockResolvedValue(errorResult)
 
     await updateCardController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalled()
+    expect(mockUpdateCardUseCase.exec).toHaveBeenCalled()
     expect(mockReply.code).toHaveBeenCalledWith(500)
     expect(mockReply.send).toHaveBeenCalled()
   })
@@ -58,22 +58,22 @@ describe('UpdateCardController', () => {
   it('should return 500 if UC returns unexpected error', async () => {
     const unexpectedError = AppError.UnexpectedError.create('some error')
 
-    mockGetAllCardsUseCase.exec.mockReturnValue(unexpectedError)
+    mockUpdateCardUseCase.exec.mockReturnValue(unexpectedError)
 
     await updateCardController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalled()
+    expect(mockUpdateCardUseCase.exec).toHaveBeenCalled()
     expect(mockReply.code).toHaveBeenCalledWith(500)
     expect(mockReply.send).toHaveBeenCalled()
   })
   it('should return 500 if UC throws', async () => {
     const unexpectedError = new Error('Unexpected error')
 
-    mockGetAllCardsUseCase.exec.mockRejectedValue(unexpectedError)
+    mockUpdateCardUseCase.exec.mockRejectedValue(unexpectedError)
 
     await updateCardController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalled()
+    expect(mockUpdateCardUseCase.exec).toHaveBeenCalled()
     expect(mockReply.code).toHaveBeenCalledWith(500)
     expect(mockReply.send).toHaveBeenCalled()
   })

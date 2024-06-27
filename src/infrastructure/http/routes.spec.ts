@@ -1,6 +1,12 @@
 import fastify, { FastifyInstance } from 'fastify'
 import { router } from './routes'
-import { createCardController, getAllCardsController, getCardByIdController, updateCardController } from './controllers'
+import {
+  createCardController,
+  deleteCardController,
+  getAllCardsController,
+  getCardByIdController,
+  updateCardController
+} from './controllers'
 
 jest.mock('./controllers', () => ({
   createCardController: {
@@ -21,6 +27,11 @@ jest.mock('./controllers', () => ({
   getCardByIdController: {
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'Card obtained' })
+    })
+  },
+  deleteCardController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Card deleted' })
     })
   }
 }))
@@ -163,5 +174,25 @@ describe('router', () => {
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Card obtained' })
     expect(getAllCardsController.exec).toHaveBeenCalled()
+  })
+
+  it('should register DELETE /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'DELETE',
+      url: '/cards/1'
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Card deleted' })
+    expect(getAllCardsController.exec).toHaveBeenCalled()
+  })
+
+  it('should validate request for DELETE /cards/:id route', async () => {
+    const response = await app.inject({
+      method: 'DELETE',
+      url: '/cards/a'
+    })
+
+    expect(response.statusCode).toBe(400)
   })
 })

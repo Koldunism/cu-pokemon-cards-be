@@ -139,12 +139,26 @@ export class SequelizeCardRepository implements CardRepository {
     }
   }
 
-  async deleteCard(id: number): Promise<void> {
-    await AttackModel.destroy({
-      where: { cardId: id }
-    })
-    await CardModel.destroy({
-      where: { id }
-    })
+  async deleteCard(id: number): Promise<boolean> {
+    const transaction = await sequelize.transaction()
+
+    try {
+      await AttackModel.destroy({
+        where: { cardId: id },
+        transaction
+      })
+      await CardModel.destroy({
+        where: { id },
+        transaction
+      })
+
+      transaction.commit()
+
+      return true
+    } catch (error) {
+      await transaction.rollback()
+      console.error('Error at deleteCard DB method: ', JSON.stringify(error))
+      return false
+    }
   }
 }

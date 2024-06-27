@@ -1,3 +1,3 @@
-export * from './gerCardById.schema'
-export * from './gerCardById.ctrl'
-export * from './gerCardById.types'
+export * from './getCardById.schema'
+export * from './getCardById.ctrl'
+export * from './getCardById.types'
