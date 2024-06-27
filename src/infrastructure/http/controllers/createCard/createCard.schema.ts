@@ -1,24 +1,4 @@
-const pokemonTypes = [
-  'normal',
-  'fire',
-  'water',
-  'electric',
-  'grass',
-  'ice',
-  'fighting',
-  'poison',
-  'ground',
-  'flying',
-  'psychic',
-  'bug',
-  'rock',
-  'ghost',
-  'dragon',
-  'dark',
-  'steel',
-  'fairy'
-]
-const cardsRarity = ['common', 'uncommon', 'rare']
+import { cardsRarity, pokemonTypes } from '../common/common.schema'
 
 const attackItem = {
   type: 'object',
