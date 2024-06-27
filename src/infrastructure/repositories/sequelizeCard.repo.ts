@@ -1,5 +1,5 @@
 import { Card } from '../../domain/entities'
-import { CardRepository } from '../../domain/repositories/card.repo'
+import { CardFilters, CardRepository, DataLimiters } from '../../domain/repositories/card.repo'
 import CardModel from '../models/card.model'
 import AttackModel from '../models/attack.model'
 import sequelize from '../database'
@@ -40,13 +40,25 @@ export class SequelizeCardRepository implements CardRepository {
     }
   }
 
-  async getAllCardsPaginated(filter: PaginatedQueryParams & SortQueryParams): Promise<Paginated<Card> | null> {
-    const { limit, offset, sortBy, order } = filter
+  async getAllCardsPaginated(dataLimiters: DataLimiters, filters?: any): Promise<Paginated<Card> | null> {
+    const { limit, offset, sortBy, order } = dataLimiters
+
     const transaction = await sequelize.transaction()
 
     try {
+      const whereClause: any = {}
+
+      if (filters) {
+        Object.keys(filters).forEach((key) => {
+          if (filters[key] !== undefined) {
+            whereClause[key] = filters[key]
+          }
+        })
+      }
+
       const { rows, count } = await CardModel.findAndCountAll({
         include: [{ model: AttackModel, as: 'attacks' }],
+        where: whereClause,
         distinct: true,
         transaction,
         limit,

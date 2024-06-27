@@ -1,6 +1,6 @@
 import { AppError, BaseUseCase, Result } from '../../core'
 import { GetAllCardsInput, GetAllCardsOutput } from './getAllCards.dto'
-import { CardRepository } from '../../domain/repositories/card.repo'
+import { CardRepository, DataLimiters } from '../../domain/repositories/card.repo'
 import { GetAllCardsError } from './getAllCards.err'
 
 type UseCaseResult = AppError.UnexpectedError | GetAllCardsError.CardsSearchFailed | Result<GetAllCardsOutput>
@@ -15,7 +15,7 @@ export class GetAllCardsUseCase extends BaseUseCase<GetAllCardsInput, UseCaseRes
 
   public async exec(getAllCardsInput: GetAllCardsInput) {
     try {
-      const { sortBy, order } = getAllCardsInput
+      const { sortBy, order }: DataLimiters = getAllCardsInput
       const paginatedCards = await this.cardRepository.getAllCardsPaginated(getAllCardsInput)
 
       if (!paginatedCards) {
