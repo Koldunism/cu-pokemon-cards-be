@@ -57,7 +57,7 @@ describe('GetAllCardsUseCase', () => {
 
     expect(result.isSuccessful).toBe(true)
     expect(result.value).toEqual(paginatedCards)
-    expect(mockCardRepository.getAllCardsPaginated).toHaveBeenCalledWith(input)
+    expect(mockCardRepository.getAllCardsPaginated).toHaveBeenCalledWith(input, {})
   })
 
   it('should return CardsSearchFailed error if no cards found', async () => {

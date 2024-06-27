@@ -10,14 +10,16 @@ export interface CardRepository {
 }
 
 export type DataLimiters = PaginatedQueryParams & SortQueryParams
-export type CardFilters = {
-  name?: string
-  type?: string
-  hp?: number
-  rarity?: string
-  expansion?: string
-  weakness?: string
-  resistance?: string
-  defense?: number
-  id?: number
-}
+export type CardFilters =
+  | {
+      name?: string
+      type?: string
+      hp?: number
+      rarity?: string
+      expansion?: string
+      weakness?: string
+      resistance?: string
+      defense?: number
+      id?: number
+    }
+  | undefined
