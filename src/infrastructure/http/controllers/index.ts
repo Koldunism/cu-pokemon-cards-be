@@ -3,11 +3,13 @@ import { GetAllCardsController } from './getAllCards'
 import { UpdateCardController } from './updateCard'
 import { GetCardByIdController } from './getCardById'
 import { DeleteCardController } from './deleteCard'
+import { GetDamageModifiersController } from './getDamageModifiers/getDamageModifiers.ctrl'
 import {
   createCardUseCase,
   deleteCardUseCase,
   getAllCardsUseCase,
   getCardByIdUseCase,
+  getDamageModifiersUseCase,
   updateCardUseCase
 } from '../../../application'
 
@@ -16,11 +18,13 @@ const getAllCardsController = new GetAllCardsController(getAllCardsUseCase)
 const updateCardController = new UpdateCardController(updateCardUseCase)
 const getCardByIdController = new GetCardByIdController(getCardByIdUseCase)
 const deleteCardController = new DeleteCardController(deleteCardUseCase)
+const getDamageModifiersController = new GetDamageModifiersController(getDamageModifiersUseCase)
 
 export {
   createCardController,
   getAllCardsController,
   updateCardController,
   getCardByIdController,
-  deleteCardController
+  deleteCardController,
+  getDamageModifiersController
 }
