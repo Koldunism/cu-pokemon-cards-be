@@ -10,8 +10,10 @@ import {
   getAllCardsUseCase,
   getCardByIdUseCase,
   getDamageModifiersUseCase,
+  simulateBattleUseCase,
   updateCardUseCase
 } from '../../../application'
+import { SimulateBattleController } from './simulateBattle'
 
 const createCardController = new CreateCardController(createCardUseCase)
 const getAllCardsController = new GetAllCardsController(getAllCardsUseCase)
@@ -19,6 +21,7 @@ const updateCardController = new UpdateCardController(updateCardUseCase)
 const getCardByIdController = new GetCardByIdController(getCardByIdUseCase)
 const deleteCardController = new DeleteCardController(deleteCardUseCase)
 const getDamageModifiersController = new GetDamageModifiersController(getDamageModifiersUseCase)
+const simulateBattleController = new SimulateBattleController(getCardByIdUseCase, simulateBattleUseCase)
 
 export {
   createCardController,
@@ -26,5 +29,6 @@ export {
   updateCardController,
   getCardByIdController,
   deleteCardController,
-  getDamageModifiersController
+  getDamageModifiersController,
+  simulateBattleController
 }

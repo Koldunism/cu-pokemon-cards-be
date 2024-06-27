@@ -1,7 +1,7 @@
 import { Result, UseCaseError } from '../../core'
 
 export namespace GetCardByIdError {
-  export class CardNotFound extends Result<UseCaseError> {
+  export class CardNotFound extends Result<any> {
     constructor(id: number) {
       super(false, undefined, {
         code: 404,
