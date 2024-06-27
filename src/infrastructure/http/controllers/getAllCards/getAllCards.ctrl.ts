@@ -3,6 +3,7 @@ import { BaseController, Result, UseCaseError } from '../../../../core'
 import { GetAllCardsInput, GetAllCardsOutput } from '../../../../application/getAllCards/getAllCards.dto'
 import { GetAllCardsUseCase } from '../../../../application/getAllCards/getAllCards.uc'
 import { GetAllCardsReq } from '.'
+import { CardFilters } from '../../../../domain/repositories/card.repo'
 
 export class GetAllCardsController extends BaseController {
   private readonly getAllCardsUseCase: GetAllCardsUseCase
@@ -14,7 +15,7 @@ export class GetAllCardsController extends BaseController {
 
   public async exec(req: GetAllCardsReq, reply: FastifyReply) {
     try {
-      const useCaseInput: GetAllCardsInput = req.query
+      const useCaseInput: GetAllCardsInput & CardFilters = req.query
 
       const result = await this.getAllCardsUseCase.exec(useCaseInput)
 
