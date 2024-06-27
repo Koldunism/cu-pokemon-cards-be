@@ -1,5 +1,5 @@
 import { DataTypes, Sequelize } from 'sequelize'
-import AttackModel from './attack.model'
+import AttackModel, { initAttackModel } from './attack.model'
 
 describe('AttackModel', () => {
   const sequelizeInstance = new Sequelize({
@@ -9,31 +9,7 @@ describe('AttackModel', () => {
   })
 
   beforeAll(async () => {
-    AttackModel.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true
-        },
-        cardId: {
-          type: DataTypes.INTEGER,
-          allowNull: false
-        },
-        name: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        },
-        power: {
-          type: DataTypes.INTEGER,
-          allowNull: false
-        }
-      },
-      {
-        tableName: 'attacks',
-        sequelize: sequelizeInstance
-      }
-    )
+    initAttackModel(sequelizeInstance)
     await sequelizeInstance.sync({ force: true })
   })
 

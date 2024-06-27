@@ -20,6 +20,12 @@ const cardsBasePath = '/cards'
 
 export const router = async (app: FastifyInstance) => {
   app.route({
+    url: '/health',
+    method: ['HEAD', 'GET'],
+    handler: async (req: CreateCardReq, reply: FastifyReply) => reply.code(200).send({ status: 'OK' })
+  })
+
+  app.route({
     url: cardsBasePath,
     method: 'POST',
     schema: createCardSchema,

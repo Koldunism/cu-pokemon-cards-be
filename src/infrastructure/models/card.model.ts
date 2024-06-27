@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize'
-import sequelize from '../database'
+import { Model, DataTypes, Sequelize } from 'sequelize'
 import AttackModel from './attack.model'
 
 class CardModel extends Model {
@@ -15,63 +14,65 @@ class CardModel extends Model {
   public expansion!: string
 }
 
-CardModel.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+export const initCardModel = (sequelize: Sequelize) => {
+  CardModel.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      name: {
+        type: new DataTypes.STRING(128),
+        allowNull: false
+      },
+      type: {
+        type: new DataTypes.STRING(128),
+        allowNull: false
+      },
+      hp: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      weakness: {
+        type: new DataTypes.STRING(128),
+        allowNull: true
+      },
+      resistance: {
+        type: new DataTypes.STRING(128),
+        allowNull: true
+      },
+      defense: {
+        type: new DataTypes.INTEGER(),
+        allowNull: true
+      },
+      rarity: {
+        type: new DataTypes.STRING(128),
+        allowNull: false
+      },
+      expansion: {
+        type: new DataTypes.STRING(128),
+        allowNull: false
+      }
     },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    type: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    hp: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    weakness: {
-      type: new DataTypes.STRING(128),
-      allowNull: true
-    },
-    resistance: {
-      type: new DataTypes.STRING(128),
-      allowNull: true
-    },
-    defense: {
-      type: new DataTypes.INTEGER(),
-      allowNull: true
-    },
-    rarity: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    expansion: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
+    {
+      tableName: 'cards',
+      sequelize
     }
-  },
-  {
-    tableName: 'cards',
-    sequelize
-  }
-)
+  )
 
-CardModel.hasMany(AttackModel, {
-  sourceKey: 'id',
-  foreignKey: 'cardId',
-  as: 'attacks',
-  onDelete: 'CASCADE'
-})
+  CardModel.hasMany(AttackModel, {
+    sourceKey: 'id',
+    foreignKey: 'cardId',
+    as: 'attacks',
+    onDelete: 'CASCADE'
+  })
 
-AttackModel.belongsTo(CardModel, {
-  targetKey: 'id',
-  foreignKey: 'cardId',
-  as: 'card'
-})
+  AttackModel.belongsTo(CardModel, {
+    targetKey: 'id',
+    foreignKey: 'cardId',
+    as: 'card'
+  })
+}
 
 export default CardModel

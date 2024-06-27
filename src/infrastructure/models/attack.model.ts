@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize'
-import sequelize from '../database'
+import { Model, DataTypes, Sequelize } from 'sequelize'
 
 class AttackModel extends Model {
   public id!: number
@@ -8,30 +7,32 @@ class AttackModel extends Model {
   public power!: number
 }
 
-AttackModel.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+export const initAttackModel = (sequelize: Sequelize) => {
+  AttackModel.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      cardId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      name: {
+        type: new DataTypes.STRING(128),
+        allowNull: false
+      },
+      power: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     },
-    cardId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    power: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+    {
+      tableName: 'attacks',
+      sequelize
     }
-  },
-  {
-    tableName: 'attacks',
-    sequelize
-  }
-)
+  )
+}
 
 export default AttackModel

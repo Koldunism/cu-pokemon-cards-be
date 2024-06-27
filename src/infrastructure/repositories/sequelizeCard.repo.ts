@@ -1,7 +1,7 @@
 import { Card } from '../../domain/entities'
 import { CardRepository, DataLimiters } from '../../domain/repositories/card.repo'
-import CardModel from '../models/card.model'
-import AttackModel from '../models/attack.model'
+import CardModel, { initCardModel } from '../models/card.model'
+import AttackModel, { initAttackModel } from '../models/attack.model'
 import sequelize from '../database'
 import { Paginated } from '../../core/PaginateQuery'
 import { CardRepositoryMapper } from './sequelizeCard.mapper'
@@ -11,6 +11,8 @@ export class SequelizeCardRepository implements CardRepository {
 
   constructor(cardRepositoryMapper: CardRepositoryMapper) {
     this.cardRepositoryMapper = cardRepositoryMapper
+    initAttackModel(sequelize)
+    initCardModel(sequelize)
   }
 
   async createCard(card: Card): Promise<Card | null> {

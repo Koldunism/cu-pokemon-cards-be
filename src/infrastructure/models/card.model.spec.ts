@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from 'sequelize'
-import CardModel from './card.model'
-import AttackModel from './attack.model'
+import CardModel, { initCardModel } from './card.model'
+import AttackModel, { initAttackModel } from './attack.model'
 
 describe('CardModel', () => {
   const sequelizeInstance = new Sequelize({
@@ -10,91 +10,8 @@ describe('CardModel', () => {
   })
 
   beforeAll(async () => {
-    CardModel.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true
-        },
-        name: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        },
-        type: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        },
-        hp: {
-          type: DataTypes.INTEGER,
-          allowNull: false
-        },
-        weakness: {
-          type: new DataTypes.STRING(128),
-          allowNull: true
-        },
-        resistance: {
-          type: new DataTypes.STRING(128),
-          allowNull: true
-        },
-        defense: {
-          type: new DataTypes.INTEGER(),
-          allowNull: true
-        },
-        rarity: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        },
-        expansion: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        }
-      },
-      {
-        tableName: 'cards',
-        sequelize: sequelizeInstance
-      }
-    )
-
-    AttackModel.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true
-        },
-        cardId: {
-          type: DataTypes.INTEGER,
-          allowNull: false
-        },
-        name: {
-          type: new DataTypes.STRING(128),
-          allowNull: false
-        },
-        power: {
-          type: DataTypes.INTEGER,
-          allowNull: false
-        }
-      },
-      {
-        tableName: 'attacks',
-        sequelize: sequelizeInstance
-      }
-    )
-
-    CardModel.hasMany(AttackModel, {
-      sourceKey: 'id',
-      foreignKey: 'cardId',
-      as: 'attacks',
-      onDelete: 'CASCADE'
-    })
-
-    AttackModel.belongsTo(CardModel, {
-      targetKey: 'id',
-      foreignKey: 'cardId',
-      as: 'card'
-    })
-
+    initAttackModel(sequelizeInstance)
+    initCardModel(sequelizeInstance)
     await sequelizeInstance.sync({ force: true })
   })
 
