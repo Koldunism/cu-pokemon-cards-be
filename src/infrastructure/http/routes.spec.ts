@@ -6,6 +6,7 @@ import {
   getAllCardsController,
   getCardByIdController,
   getDamageModifiersController,
+  simulateBattleController,
   updateCardController
 } from './controllers'
 
@@ -38,6 +39,11 @@ jest.mock('./controllers', () => ({
   getDamageModifiersController: {
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'Cards obtained' })
+    })
+  },
+  simulateBattleController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Battle simulated' })
     })
   }
 }))
@@ -147,7 +153,7 @@ describe('router', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Card updated' })
-    expect(getAllCardsController.exec).toHaveBeenCalled()
+    expect(updateCardController.exec).toHaveBeenCalled()
   })
 
   it('should validate request for PATCH /cards/:id route', async () => {
@@ -179,7 +185,7 @@ describe('router', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Card obtained' })
-    expect(getAllCardsController.exec).toHaveBeenCalled()
+    expect(getCardByIdController.exec).toHaveBeenCalled()
   })
 
   it('should register DELETE /cards/:id route', async () => {
@@ -190,7 +196,7 @@ describe('router', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Card deleted' })
-    expect(getAllCardsController.exec).toHaveBeenCalled()
+    expect(deleteCardController.exec).toHaveBeenCalled()
   })
 
   it('should validate request for DELETE /cards/:id route', async () => {
@@ -219,6 +225,33 @@ describe('router', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Cards obtained' })
-    expect(getAllCardsController.exec).toHaveBeenCalled()
+    expect(getDamageModifiersController.exec).toHaveBeenCalled()
+  })
+  it('should validate request for GET /cards/battle route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/battle',
+      query: {
+        attackerId: 'a',
+        defenderId: '3'
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('should register GET /cards/battle route', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/cards/battle',
+      query: {
+        attackerId: '1',
+        defenderId: '3'
+      }
+    })
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Battle simulated' })
+    expect(simulateBattleController.exec).toHaveBeenCalled()
   })
 })

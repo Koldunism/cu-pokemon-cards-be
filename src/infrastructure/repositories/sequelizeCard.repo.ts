@@ -7,7 +7,7 @@ import { Paginated } from '../../core/PaginateQuery'
 import { CardRepositoryMapper } from './sequelizeCard.mapper'
 
 export class SequelizeCardRepository implements CardRepository {
-  private readonly cardRepositoryMapper: CardRepositoryMapper
+  public readonly cardRepositoryMapper: CardRepositoryMapper
 
   constructor(cardRepositoryMapper: CardRepositoryMapper) {
     this.cardRepositoryMapper = cardRepositoryMapper

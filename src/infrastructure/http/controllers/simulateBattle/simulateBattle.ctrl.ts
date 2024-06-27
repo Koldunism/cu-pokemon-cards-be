@@ -22,14 +22,12 @@ export class SimulateBattleController extends BaseController {
 
       const attackerResult = await this.getCardByIdUseCase.exec({ id: attackerId })
       if (attackerResult.isFailure) {
-        const error = attackerResult as Result<UseCaseError>
-        return this.notFound(reply, error.errorValue.message)
+        return this.notFound(reply, 'Attacker card not found!')
       }
 
       const defenderResult = await this.getCardByIdUseCase.exec({ id: defenderId })
       if (defenderResult.isFailure) {
-        const error = defenderResult as Result<UseCaseError>
-        return this.notFound(reply, error.errorValue.message)
+        return this.notFound(reply, 'Defender card not found!')
       }
 
       const attacker = attackerResult.value.data
