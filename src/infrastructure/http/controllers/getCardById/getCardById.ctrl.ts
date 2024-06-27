@@ -2,7 +2,7 @@ import { FastifyReply } from 'fastify'
 import { BaseController, Result, UseCaseError } from '../../../../core'
 import { GetCardByIdError, GetCardByIdUseCase } from '../../../../application/getCardById'
 import { GetCardByIdOutput, GetCardByIdInput } from '../../../../application/getCardById'
-import { GetCardByIdReq } from './gerCardById.types'
+import { GetCardByIdReq } from './getCardById.types'
 
 export class GetCardByIdController extends BaseController {
   private readonly getCardByIdUseCase: GetCardByIdUseCase

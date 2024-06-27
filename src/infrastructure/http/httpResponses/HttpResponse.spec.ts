@@ -37,6 +37,12 @@ describe('HttpResponse', () => {
     expect(mockReply.send).toHaveBeenCalledWith('Created')
   })
 
+  it('should respond with 204 No Content', async () => {
+    const errorMsg = 'Bad request'
+    await httpResponse.noContent(mockReply as FastifyReply, errorMsg)
+    expect(mockReply.code).toHaveBeenCalledWith(204)
+    expect(mockReply.send).toHaveBeenCalledWith({ code: 'No Content', message: errorMsg })
+  })
   it('should respond with 400 Bad Request', async () => {
     const errorMsg = 'Bad request'
     await httpResponse.badRequest(mockReply as FastifyReply, errorMsg)

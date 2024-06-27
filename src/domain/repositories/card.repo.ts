@@ -6,5 +6,5 @@ export interface CardRepository {
   getAllCardsPaginated(filters: PaginatedQueryParams & SortQueryParams): Promise<Paginated<Card> | null>
   getCardById(id: number): Promise<Card | null>
   updateCard(card: Partial<Card>): Promise<boolean>
-  deleteCard(id: number): Promise<void>
+  deleteCard(id: number): Promise<boolean>
 }

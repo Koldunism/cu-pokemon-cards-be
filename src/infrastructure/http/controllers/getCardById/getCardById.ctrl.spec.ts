@@ -2,7 +2,7 @@ import { GetCardByIdController, GetCardByIdReq } from '.'
 import { GetCardByIdError } from '../../../../application/getCardById/getCardById.err'
 import { AppError, Result } from '../../../../core'
 
-const mockGetAllCardsUseCase = {
+const mockGetCardByIdUseCase = {
   exec: jest.fn()
 } as any
 
@@ -12,7 +12,7 @@ describe('GetCardByIdController', () => {
   let mockReply: any
 
   beforeEach(() => {
-    getAllCardsController = new GetCardByIdController(mockGetAllCardsUseCase)
+    getAllCardsController = new GetCardByIdController(mockGetCardByIdUseCase)
     mockRequest = {
       params: {
         id: 1
@@ -30,11 +30,11 @@ describe('GetCardByIdController', () => {
   })
 
   it('should return 200 if nothing fails', async () => {
-    mockGetAllCardsUseCase.exec.mockResolvedValue(Result.success({ data: {} }))
+    mockGetCardByIdUseCase.exec.mockResolvedValue(Result.success({ data: {} }))
 
     await getAllCardsController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
+    expect(mockGetCardByIdUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
     expect(mockReply.code).toHaveBeenCalledWith(200)
     expect(mockReply.send).toHaveBeenCalled()
   })
@@ -42,11 +42,11 @@ describe('GetCardByIdController', () => {
   it('should return 404 if card is not found', async () => {
     const errorResult = new GetCardByIdError.CardNotFound(mockRequest.params.id)
 
-    mockGetAllCardsUseCase.exec.mockResolvedValue(errorResult)
+    mockGetCardByIdUseCase.exec.mockResolvedValue(errorResult)
 
     await getAllCardsController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
+    expect(mockGetCardByIdUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
     expect(mockReply.code).toHaveBeenCalledWith(404)
     expect(mockReply.send).toHaveBeenCalled()
   })
@@ -54,22 +54,22 @@ describe('GetCardByIdController', () => {
   it('should return 500 if UC returns unexpected error', async () => {
     const unexpectedError = AppError.UnexpectedError.create('some error')
 
-    mockGetAllCardsUseCase.exec.mockReturnValue(unexpectedError)
+    mockGetCardByIdUseCase.exec.mockReturnValue(unexpectedError)
 
     await getAllCardsController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
+    expect(mockGetCardByIdUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
     expect(mockReply.code).toHaveBeenCalledWith(500)
     expect(mockReply.send).toHaveBeenCalled()
   })
   it('should return 500 if UC throws', async () => {
     const unexpectedError = new Error('Unexpected error')
 
-    mockGetAllCardsUseCase.exec.mockRejectedValue(unexpectedError)
+    mockGetCardByIdUseCase.exec.mockRejectedValue(unexpectedError)
 
     await getAllCardsController.exec(mockRequest, mockReply)
 
-    expect(mockGetAllCardsUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
+    expect(mockGetCardByIdUseCase.exec).toHaveBeenCalledWith(mockRequest.params)
     expect(mockReply.code).toHaveBeenCalledWith(500)
     expect(mockReply.send).toHaveBeenCalled()
   })
