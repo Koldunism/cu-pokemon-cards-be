@@ -65,6 +65,6 @@ export const router = async (app: FastifyInstance) => {
     url: `${cardsBasePath}/battle`,
     method: 'GET',
     schema: simulateBattleSchema,
-    handler: async (req: SimulateBattleReq, reply) => simulateBattleController.exec(req, reply)
+    handler: async (req: SimulateBattleReq, reply: FastifyReply) => simulateBattleController.exec(req, reply)
   })
 }
