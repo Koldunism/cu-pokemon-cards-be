@@ -1,7 +1,8 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyReply } from 'fastify'
 import { BaseController, Result, UseCaseError } from '../../../../core'
 import { GetAllCardsInput, GetAllCardsOutput } from '../../../../application/getAllCards/getAllCards.dto'
 import { GetAllCardsUseCase } from '../../../../application/getAllCards/getAllCards.uc'
+import { GetAllCardsReq } from '.'
 
 export class GetAllCardsController extends BaseController {
   private readonly getAllCardsUseCase: GetAllCardsUseCase
@@ -11,7 +12,7 @@ export class GetAllCardsController extends BaseController {
     this.getAllCardsUseCase = getAllCardsUseCase
   }
 
-  public async exec(req: FastifyRequest, reply: FastifyReply) {
+  public async exec(req: GetAllCardsReq, reply: FastifyReply) {
     try {
       const useCaseInput = req.query as GetAllCardsInput
 

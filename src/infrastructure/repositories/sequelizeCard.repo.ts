@@ -1,4 +1,4 @@
-import { Card, Attack } from '../../domain/entities'
+import { Card } from '../../domain/entities'
 import { CardRepository } from '../../domain/repositories/card.repo'
 import CardModel from '../models/card.model'
 import AttackModel from '../models/attack.model'
@@ -21,10 +21,10 @@ export class SequelizeCardRepository implements CardRepository {
           attacks: attacks.map(({ name, power }) => ({ name, power }))
         },
         {
-          include: [{ model: AttackModel, as: 'attacks' }]
+          include: [{ model: AttackModel, as: 'attacks' }],
+          transaction
         }
       )
-
       await transaction.commit()
 
       const attacksModel = cardModel.dataValues.attacks as [AttackModel]
@@ -48,6 +48,7 @@ export class SequelizeCardRepository implements CardRepository {
       const { rows, count } = await CardModel.findAndCountAll({
         include: [{ model: AttackModel, as: 'attacks' }],
         distinct: true,
+        transaction,
         limit,
         offset,
         order: [[sortBy, order]]
@@ -78,34 +79,50 @@ export class SequelizeCardRepository implements CardRepository {
     return new Card({ ...cardModel })
   }
 
-  async updateCard(id: number, card: Card): Promise<void> {
-    const transaction = sequelize.transaction() //TODO transaction example.
+  async updateCard(card: Partial<Card>): Promise<boolean> {
+    const transaction = await sequelize.transaction()
+    const { id } = card
 
-    await CardModel.update(
-      {
-        name: card.name,
-        type: card.type,
-        hp: card.hp,
-        weakness: card.weakness,
-        resistance: card.resistance,
-        rarity: card.rarity,
-        expansion: card.expansion
-      },
-      {
-        where: { id }
+    try {
+      await CardModel.update(
+        {
+          ...(card.name && { name: card.name }),
+          ...(card.type && { name: card.type }),
+          ...(card.hp && { name: card.hp }),
+          ...(card.weakness && { name: card.weakness }),
+          ...(card.resistance && { name: card.resistance }),
+          ...(card.defense && { name: card.defense }),
+          ...(card.rarity && { name: card.rarity }),
+          ...(card.expansion && { name: card.expansion })
+        },
+        {
+          where: { id },
+          transaction
+        }
+      )
+
+      if (card.attacks) {
+        await AttackModel.destroy({
+          where: { cardId: id },
+          transaction
+        })
+
+        const attacks = card.attacks.map((attack) => ({
+          ...attack,
+          cardId: id
+        }))
+
+        await AttackModel.bulkCreate(attacks, { transaction })
       }
-    )
 
-    await AttackModel.destroy({
-      where: { cardId: id }
-    })
+      transaction.commit()
 
-    const attacks = card.attacks.map((attack) => ({
-      ...attack,
-      cardId: id
-    }))
-
-    await AttackModel.bulkCreate(attacks)
+      return true
+    } catch (error) {
+      await transaction.rollback()
+      console.error('Error at getAllCardsPaginated DB method: ', JSON.stringify(error))
+      return false
+    }
   }
 
   async deleteCard(id: number): Promise<void> {

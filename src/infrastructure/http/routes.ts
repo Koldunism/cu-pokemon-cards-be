@@ -1,7 +1,8 @@
 import { FastifyInstance, FastifyReply } from 'fastify'
 import { createCardSchema, CreateCardReq } from './controllers/createCard'
-import { createCardController, getAllCardsController } from './controllers'
 import { GetAllCardsReq, getAllCardsSchema } from './controllers/getAllCards'
+import { UpdateCardReq, updateCardSchema } from './controllers/updateCard'
+import { createCardController, getAllCardsController, updateCardController } from './controllers'
 
 const cardsBasePath = '/cards'
 
@@ -18,5 +19,12 @@ export const router = async (app: FastifyInstance) => {
     method: 'GET',
     schema: getAllCardsSchema,
     handler: async (req: GetAllCardsReq, reply: FastifyReply) => getAllCardsController.exec(req, reply)
+  })
+
+  app.route({
+    url: `${cardsBasePath}/:id`,
+    method: 'PATCH',
+    schema: updateCardSchema,
+    handler: async (req: UpdateCardReq, reply: FastifyReply) => updateCardController.exec(req, reply)
   })
 }
