@@ -7,7 +7,7 @@
     "test": "jest --coverage --silent",
     "format": "npx prettier --write \"**/*.ts\"",
     "dev": "ts-node -r tsconfig-paths/register -r source-map-support/register src/index.ts src/infrastructure/http/index.ts",
-    "start": "node -r tsconfig-paths/register -r source-map-support/register dist/index.js",
+    "start": "npm run build && node -r tsconfig-paths/register -r source-map-support/register dist/index.js",
     "build": "tsc"
   },
   "author": "Juan G. Palermo",

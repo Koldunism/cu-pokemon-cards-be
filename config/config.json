@@ -5,19 +5,5 @@
     "database": "pokemon_cards",
     "host": "127.0.0.1",
     "dialect": "postgres"
-  },
-  "test": {
-    "username": "postgres",
-    "password": "EB&Tn4Vr!",
-    "database": "pokemon_cards",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": "postgres",
-    "password": "EB&Tn4Vr!",
-    "database": "pokemon_cards",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
   }
 }
