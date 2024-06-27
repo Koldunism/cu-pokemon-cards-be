@@ -1,15 +1,18 @@
 import { Card } from '../../domain/entities'
-import { CardFilters, CardRepository, DataLimiters } from '../../domain/repositories/card.repo'
+import { CardRepository, DataLimiters } from '../../domain/repositories/card.repo'
 import CardModel from '../models/card.model'
 import AttackModel from '../models/attack.model'
 import sequelize from '../database'
-import { Paginated, PaginatedQueryParams } from '../../core/PaginateQuery'
-import { SortQueryParams } from '../../core'
-
-//TODO: trycatch blocks
-//TODO: transaction methods with multi calls
+import { Paginated } from '../../core/PaginateQuery'
+import { CardRepositoryMapper } from './sequelizeCard.mapper'
 
 export class SequelizeCardRepository implements CardRepository {
+  private readonly cardRepositoryMapper: CardRepositoryMapper
+
+  constructor(cardRepositoryMapper: CardRepositoryMapper) {
+    this.cardRepositoryMapper = cardRepositoryMapper
+  }
+
   async createCard(card: Card): Promise<Card | null> {
     const { attacks, ...cardData } = card
     const transaction = await sequelize.transaction()
@@ -27,12 +30,7 @@ export class SequelizeCardRepository implements CardRepository {
       )
       await transaction.commit()
 
-      const attacksModel = cardModel.dataValues.attacks as [AttackModel]
-
-      return new Card({
-        ...cardModel.dataValues,
-        attacks: attacksModel.map(({ name, power }) => ({ name, power }))
-      })
+      return this.cardRepositoryMapper.cardModelToCard(cardModel)
     } catch (error: any) {
       await transaction.rollback()
       console.error('Error at createCard DB method: ', JSON.stringify(error))
@@ -67,13 +65,11 @@ export class SequelizeCardRepository implements CardRepository {
       })
       await transaction.commit()
 
-      const data = rows.map((cardModel) => new Card({ ...cardModel.dataValues }))
-
       return {
-        data,
+        data: rows.map((cardModel) => this.cardRepositoryMapper.cardModelToCard(cardModel)),
         offset,
         limit,
-        hasNext: offset + data.length < count,
+        hasNext: offset + rows.length < count,
         total: count
       }
     } catch (error) {
@@ -92,12 +88,7 @@ export class SequelizeCardRepository implements CardRepository {
         return null
       }
 
-      const attacksModel = cardModel.dataValues.attacks as [AttackModel]
-
-      return new Card({
-        ...cardModel.dataValues,
-        attacks: attacksModel.map(({ name, power }) => ({ name, power }))
-      })
+      return this.cardRepositoryMapper.cardModelToCard(cardModel)
     } catch (error) {
       await transaction.rollback()
       console.error('Error at getAllCardsPaginated DB method: ', JSON.stringify(error))
@@ -180,6 +171,6 @@ export class SequelizeCardRepository implements CardRepository {
       include: [{ model: AttackModel, as: 'attacks' }]
     })
 
-    return cardModels.map((cardModel) => new Card({ ...cardModel.dataValues }))
+    return cardModels.map((cardModel) => this.cardRepositoryMapper.cardModelToCard(cardModel))
   }
 }
