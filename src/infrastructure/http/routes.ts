@@ -10,9 +10,11 @@ import {
   getAllCardsController,
   getCardByIdController,
   getDamageModifiersController,
+  simulateBattleController,
   updateCardController
 } from './controllers'
 import { GetDamageModifiersReq, getDamageModifiersSchema } from './controllers/getDamageModifiers'
+import { SimulateBattleReq, simulateBattleSchema } from './controllers/simulateBattle'
 
 const cardsBasePath = '/cards'
 
@@ -57,5 +59,12 @@ export const router = async (app: FastifyInstance) => {
     method: 'GET',
     schema: getDamageModifiersSchema,
     handler: async (req: GetDamageModifiersReq, reply: FastifyReply) => getDamageModifiersController.exec(req, reply)
+  })
+
+  app.route({
+    url: `${cardsBasePath}/battle`,
+    method: 'GET',
+    schema: simulateBattleSchema,
+    handler: async (req: SimulateBattleReq, reply) => simulateBattleController.exec(req, reply)
   })
 }
