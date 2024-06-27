@@ -14,7 +14,7 @@ export class GetAllCardsController extends BaseController {
 
   public async exec(req: GetAllCardsReq, reply: FastifyReply) {
     try {
-      const useCaseInput = req.query as GetAllCardsInput
+      const useCaseInput: GetAllCardsInput = req.query
 
       const result = await this.getAllCardsUseCase.exec(useCaseInput)
 

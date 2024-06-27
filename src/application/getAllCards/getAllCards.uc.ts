@@ -3,7 +3,7 @@ import { GetAllCardsInput, GetAllCardsOutput } from './getAllCards.dto'
 import { CardRepository } from '../../domain/repositories/card.repo'
 import { GetAllCardsError } from './getAllCards.err'
 
-type UseCaseResult = AppError.UnexpectedError | Result<any>
+type UseCaseResult = AppError.UnexpectedError | GetAllCardsError.CardsSearchFailed | Result<GetAllCardsOutput>
 
 export class GetAllCardsUseCase extends BaseUseCase<GetAllCardsInput, UseCaseResult> {
   private readonly cardRepository: CardRepository
