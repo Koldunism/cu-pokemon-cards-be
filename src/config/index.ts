@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { Dialect } from 'sequelize'
 
 export const DBCONFIG = {
@@ -24,3 +25,5 @@ export const SERVERCONFIG = {
   port: process.env.PORT || 3000,
   host: process.env.HOST || '0.0.0.0'
 }
+
+export const ROUTES_WITHOUT_AUTHENTICATION = ['/health', '/login']
