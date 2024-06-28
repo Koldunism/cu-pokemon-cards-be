@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^8.16.0",
-    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.0",
@@ -29,6 +28,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/chai": "^4.3.16",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",

@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { createCardSchema, CreateCardReq } from './controllers/createCard'
 import { GetAllCardsReq, getAllCardsSchema } from './controllers/getAllCards'
 import { UpdateCardReq, updateCardSchema } from './controllers/updateCard'
@@ -10,11 +10,13 @@ import {
   getAllCardsController,
   getCardByIdController,
   getDamageModifiersController,
+  loginController,
   simulateBattleController,
   updateCardController
 } from './controllers'
 import { GetDamageModifiersReq, getDamageModifiersSchema } from './controllers/getDamageModifiers'
 import { SimulateBattleReq, simulateBattleSchema } from './controllers/simulateBattle'
+import { LoginReq, loginSchema } from './controllers/login'
 
 const cardsBasePath = '/cards'
 
@@ -22,7 +24,14 @@ export const router = async (app: FastifyInstance) => {
   app.route({
     url: '/health',
     method: ['HEAD', 'GET'],
-    handler: async (req: CreateCardReq, reply: FastifyReply) => reply.code(200).send({ status: 'OK' })
+    handler: async (req: FastifyRequest, reply: FastifyReply) => reply.code(200).send({ status: 'OK' })
+  })
+
+  app.route({
+    url: '/login',
+    method: ['POST'],
+    schema: loginSchema,
+    handler: async (req: LoginReq, reply: FastifyReply) => loginController.exec(req, reply)
   })
 
   app.route({
