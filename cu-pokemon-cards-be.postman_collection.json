@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "03ba5e2a-fb38-4d99-bdbe-50e0a0b05b22",
+		"name": "cu-pokemon-cards-be",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36480876"
+	},
+	"item": [
+		{
+			"name": "Create Card",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTYxNTY3MCwiZXhwIjoxNzE5NjE5MjcwfQ.jhc04FNDDAS0FKykFxenXSaENLwEJNySRJ0Y2COGAHY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pinsir\",\r\n    \"type\": \"Electric\",\r\n    \"hp\": 60,\r\n    \"weakness\": \"Fighting\",\r\n    \"resistance\": \"Steel\",\r\n    \"defense\": 20,\r\n    \"rarity\": \"Common\",\r\n    \"expansion\": \"Gen 1\",\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Meal time\",\r\n            \"power\": 0 \r\n        },\r\n        {\r\n            \"name\": \"Gnaw\",\r\n            \"power\": 20\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/cards",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Cards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTYxMzc5OCwiZXhwIjoxNzE5NjE3Mzk4fQ.GpgfIhEo2PCn8v_bTXTRPJ8FL3h0aOrzS6MMr-mzUEs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cards",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Card",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pikachu\",\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Meal time\",\r\n            \"power\": 0 \r\n        },\r\n        {\r\n            \"name\": \"Gnaw\",\r\n            \"power\": 20\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/cards/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Card by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTYxMzc5OCwiZXhwIjoxNzE5NjE3Mzk4fQ.GpgfIhEo2PCn8v_bTXTRPJ8FL3h0aOrzS6MMr-mzUEs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cards/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Card",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTYxMzc5OCwiZXhwIjoxNzE5NjE3Mzk4fQ.GpgfIhEo2PCn8v_bTXTRPJ8FL3h0aOrzS6MMr-mzUEs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cards/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get weaknesses and resistances",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTYxMzc5OCwiZXhwIjoxNzE5NjE3Mzk4fQ.GpgfIhEo2PCn8v_bTXTRPJ8FL3h0aOrzS6MMr-mzUEs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cards/1/damage-modifiers",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards",
+						"1",
+						"damage-modifiers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Simulate Battle",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxOTUzODQzOCwiZXhwIjoxNzE5NTQyMDM4fQ.mImXP9n3jIzHwkrjw0EXmlwLfxp_13wQe2wU9Vg0UsE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cards/battle?attackerId=1&defenderId=3",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cards",
+						"battle"
+					],
+					"query": [
+						{
+							"key": "attackerId",
+							"value": "1"
+						},
+						{
+							"key": "defenderId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/health",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"tester\",\r\n    \"passwordHash\": 123456\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
