@@ -1,4 +1,4 @@
-import { pokemonTypes, cardsRarity } from '../common/common.schema'
+import { pokemonTypes, cardsRarity, commonErrorResponses } from '../common/common.schema'
 
 const attackItem = {
   type: 'object',
@@ -60,7 +60,19 @@ const queryparamsSchema = {
   }
 }
 
+const responseSchema = {
+  200: {
+    type: 'object',
+    description: 'card updated successfuly',
+    properties: {
+      success: { type: 'boolean' }
+    }
+  },
+  ...commonErrorResponses
+}
+
 export const updateCardSchema = {
   params: queryparamsSchema,
-  body: bodyJsonSchema
+  body: bodyJsonSchema,
+  response: responseSchema
 }

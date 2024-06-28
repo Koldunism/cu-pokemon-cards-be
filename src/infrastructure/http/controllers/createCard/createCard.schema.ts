@@ -1,4 +1,4 @@
-import { cardsRarity, pokemonTypes } from '../common/common.schema'
+import { cardResponseSchema, cardsRarity, commonErrorResponses, pokemonTypes } from '../common/common.schema'
 
 const attackItem = {
   type: 'object',
@@ -53,6 +53,18 @@ const bodyJsonSchema = {
   additionalProperties: false
 }
 
+const responseSchema = {
+  200: {
+    type: 'object',
+    description: 'Card created successfuly',
+    properties: {
+      data: cardResponseSchema
+    }
+  },
+  ...commonErrorResponses
+}
+
 export const createCardSchema = {
-  body: bodyJsonSchema
+  body: bodyJsonSchema,
+  response: responseSchema
 }

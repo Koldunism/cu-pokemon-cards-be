@@ -1,4 +1,4 @@
-import { pokemonTypes, cardsRarity } from '../common/common.schema'
+import { pokemonTypes, cardsRarity, cardResponseSchema, commonErrorResponses } from '../common/common.schema'
 
 const querystringSchema = {
   type: 'object',
@@ -20,6 +20,27 @@ const querystringSchema = {
   additionalProperties: false
 }
 
+const responseSchema = {
+  200: {
+    type: 'object',
+    description: 'Cards obtained',
+    properties: {
+      data: {
+        type: 'array',
+        items: cardResponseSchema
+      },
+      sortBy: { type: 'string' },
+      order: { type: 'string' },
+      limit: { type: 'integer' },
+      offset: { type: 'integer' },
+      hasNext: { type: 'integer' },
+      total: { type: 'integer' }
+    }
+  },
+  ...commonErrorResponses
+}
+
 export const getAllCardsSchema = {
-  querystring: querystringSchema
+  querystring: querystringSchema,
+  response: responseSchema
 }

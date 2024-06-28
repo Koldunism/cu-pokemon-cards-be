@@ -1,3 +1,5 @@
+import { commonErrorResponses } from '../common/common.schema'
+
 const querystringSchema = {
   type: 'object',
   required: ['attackerId', 'defenderId'],
@@ -8,6 +10,20 @@ const querystringSchema = {
   additionalProperties: false
 }
 
+const responseSchema = {
+  200: {
+    type: 'object',
+    description: 'Battle simulation OK',
+    properties: {
+      attackerWins: { type: 'boolean' },
+      attackerDamage: { type: 'number' },
+      defenderHP: { type: 'number' }
+    }
+  },
+  ...commonErrorResponses
+}
+
 export const simulateBattleSchema = {
-  querystring: querystringSchema
+  querystring: querystringSchema,
+  response: responseSchema
 }

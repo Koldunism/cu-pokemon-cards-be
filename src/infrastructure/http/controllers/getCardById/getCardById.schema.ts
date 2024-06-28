@@ -1,3 +1,5 @@
+import { cardResponseSchema, commonErrorResponses } from '../common/common.schema'
+
 const queryparamsSchema = {
   type: 'object',
   properties: {
@@ -6,6 +8,18 @@ const queryparamsSchema = {
   required: ['id']
 }
 
+const responseSchema = {
+  200: {
+    type: 'object',
+    description: 'Card obtained',
+    properties: {
+      data: cardResponseSchema
+    }
+  },
+  ...commonErrorResponses
+}
+
 export const getCardByIdSchema = {
-  params: queryparamsSchema
+  params: queryparamsSchema,
+  response: responseSchema
 }

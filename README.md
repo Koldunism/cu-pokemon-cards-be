@@ -119,7 +119,7 @@ To access protected endpoints, you need to authenticate using the `/login` endpo
 ```json
 {
   "username": "tester",
-  "password": "123456"
+  "passwordHash": "123456"
 }
 ```
 

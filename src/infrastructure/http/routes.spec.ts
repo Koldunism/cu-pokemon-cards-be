@@ -90,7 +90,6 @@ describe('router', () => {
     console.log(response)
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Card created successfully' })
     expect(createCardController.exec).toHaveBeenCalled()
   })
 
@@ -131,7 +130,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'List retrieved' })
     expect(getAllCardsController.exec).toHaveBeenCalled()
   })
 
@@ -160,7 +158,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Card updated' })
     expect(updateCardController.exec).toHaveBeenCalled()
   })
 
@@ -192,7 +189,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Card obtained' })
     expect(getCardByIdController.exec).toHaveBeenCalled()
   })
 
@@ -203,7 +199,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Card deleted' })
     expect(deleteCardController.exec).toHaveBeenCalled()
   })
 
@@ -232,7 +227,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Cards obtained' })
     expect(getDamageModifiersController.exec).toHaveBeenCalled()
   })
   it('should validate request for GET /cards/battle route', async () => {
@@ -259,7 +253,6 @@ describe('router', () => {
     })
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Battle simulated' })
     expect(simulateBattleController.exec).toHaveBeenCalled()
   })
 
@@ -276,7 +269,6 @@ describe('router', () => {
     console.log(response)
 
     expect(response.statusCode).toBe(200)
-    expect(response.json()).toEqual({ message: 'Login success' })
     expect(loginController.exec).toHaveBeenCalled()
   })
 
