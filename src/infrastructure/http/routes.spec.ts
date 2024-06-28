@@ -6,6 +6,7 @@ import {
   getAllCardsController,
   getCardByIdController,
   getDamageModifiersController,
+  loginController,
   simulateBattleController,
   updateCardController
 } from './controllers'
@@ -45,6 +46,11 @@ jest.mock('./controllers', () => ({
     exec: jest.fn(async (req, reply) => {
       return reply.send({ message: 'Battle simulated' })
     })
+  },
+  loginController: {
+    exec: jest.fn(async (req, reply) => {
+      return reply.send({ message: 'Login success' })
+    })
   }
 }))
 
@@ -67,19 +73,21 @@ describe('router', () => {
       url: '/cards',
       payload: {
         name: 'Pikachu',
-        type: 'electric',
+        type: 'Electric',
         hp: 35,
-        rarity: 'common',
+        rarity: 'Common',
         attacks: [
           { name: 'Thunder Shock', power: 40 },
           { name: 'Quick Attack', power: 30 }
         ],
         expansion: 'Base Set',
-        weakness: 'ground',
-        resistance: 'flying',
+        weakness: 'Ground',
+        resistance: 'Flying',
         defense: 50
       }
     })
+
+    console.log(response)
 
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Card created successfully' })
@@ -253,5 +261,36 @@ describe('router', () => {
     expect(response.statusCode).toBe(200)
     expect(response.json()).toEqual({ message: 'Battle simulated' })
     expect(simulateBattleController.exec).toHaveBeenCalled()
+  })
+
+  it('should register POST /login route', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/login',
+      payload: {
+        username: 'user',
+        passwordHash: '1234'
+      }
+    })
+
+    console.log(response)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.json()).toEqual({ message: 'Login success' })
+    expect(loginController.exec).toHaveBeenCalled()
+  })
+
+  it('should validate request payload for POST /cards route', async () => {
+    const invalidPayload = {
+      defense: 50
+    }
+
+    const response = await app.inject({
+      method: 'POST',
+      url: '/login',
+      payload: invalidPayload
+    })
+
+    expect(response.statusCode).toBe(400)
   })
 })

@@ -21,7 +21,7 @@ export class LoginUseCase extends BaseUseCase<LoginInput, UseCaseResult> {
         return new LoginError.InvalidCredentials()
       }
 
-      if (input.password !== user.passwordHash) {
+      if (input.passwordHash !== user.passwordHash) {
         return new LoginError.InvalidCredentials()
       }
 

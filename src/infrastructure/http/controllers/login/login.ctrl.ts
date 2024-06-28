@@ -1,6 +1,6 @@
 import { FastifyReply } from 'fastify'
 import { BaseController, Result, UseCaseError } from '../../../../core'
-import { LoginUseCase } from '../../../../application/login'
+import { LoginError, LoginUseCase } from '../../../../application/login'
 import { LoginInput, LoginOutput } from '../../../../application/login'
 import { LoginReq } from './login.types'
 
@@ -14,13 +14,20 @@ export class LoginController extends BaseController {
 
   public async exec(req: LoginReq, reply: FastifyReply) {
     try {
-      const { username, password }: LoginInput = req.body
+      const { username, passwordHash }: LoginInput = req.body
 
-      const result = await this.loginUseCase.exec({ username, password })
+      const result = await this.loginUseCase.exec({ username, passwordHash })
 
       if (result.isFailure) {
         const error = result as Result<UseCaseError>
-        return this.unauthorized(reply, error.errorValue.message)
+        const errorMsg = error.errorValue.message
+        console.error(`Error produced while logging in: ${errorMsg}`)
+        switch (error.constructor) {
+          case LoginError.InvalidCredentials:
+            return this.unauthorized(reply, errorMsg)
+          default:
+            return this.internalServerError(reply, result.errorValue)
+        }
       }
 
       const loginOutput = result.value as LoginOutput

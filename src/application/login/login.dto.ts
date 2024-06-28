@@ -1,6 +1,6 @@
 export interface LoginInput {
   username: string
-  password: string
+  passwordHash: string
 }
 
 export interface LoginOutput {

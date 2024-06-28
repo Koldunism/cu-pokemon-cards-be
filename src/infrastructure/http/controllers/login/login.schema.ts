@@ -1,11 +1,11 @@
 const bodyJsonSchema = {
   type: 'object',
-  required: ['username', 'password'],
+  required: ['username', 'passwordHash'],
   properties: {
     username: {
       type: 'string'
     },
-    password: {
+    passwordHash: {
       type: 'string'
     }
   },
