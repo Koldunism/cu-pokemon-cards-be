@@ -3,9 +3,16 @@ import { router } from './routes'
 import { ROUTES_WITHOUT_AUTHENTICATION } from '../../config'
 import { authMiddleware } from '../middlewares/authorization.mw'
 import crypto from 'crypto'
+import cors from '@fastify/cors'
 
 export const start = (fastifyConfig: FastifyServerOptions): FastifyInstance => {
   const app = fastify(fastifyConfig)
+
+  app.register(cors, {
+    origin: 'http://localhost:3001', // URL del frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true
+  })
 
   app.register(router)
 
